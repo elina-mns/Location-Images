@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		315140D32541F9FE000A43C7 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315140D22541F9FE000A43C7 /* Client.swift */; };
+		315140DF25420E0E000A43C7 /* GetPhotosResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315140DE25420E0E000A43C7 /* GetPhotosResponse.swift */; };
 		317CBCDE2540965F00280C5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317CBCDD2540965F00280C5B /* AppDelegate.swift */; };
 		317CBCE52540965F00280C5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 317CBCE32540965F00280C5B /* Main.storyboard */; };
 		317CBCE72540966000280C5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 317CBCE62540966000280C5B /* Assets.xcassets */; };
@@ -38,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		315140D22541F9FE000A43C7 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		315140DE25420E0E000A43C7 /* GetPhotosResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotosResponse.swift; sourceTree = "<group>"; };
 		317CBCDA2540965F00280C5B /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		317CBCDD2540965F00280C5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		317CBCE42540965F00280C5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -82,10 +86,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		315140C92541DAA3000A43C7 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				317CBCE32540965F00280C5B /* Main.storyboard */,
+				317CBCE82540966000280C5B /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		315140CA2541DAC8000A43C7 /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				317CBD232540D40500280C5B /* Pins&Photos.xcdatamodeld */,
+			);
+			path = "Data Model";
+			sourceTree = "<group>";
+		};
+		315140CB2541DAD2000A43C7 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				317CBD162540BD4800280C5B /* MapViewController.swift */,
+				317CBD1B2540BD5900280C5B /* LocationImagesController.swift */,
+				317CBD292540F03300280C5B /* DataController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		315140DA2541FA0E000A43C7 /* API client */ = {
+			isa = PBXGroup;
+			children = (
+				315140D22541F9FE000A43C7 /* Client.swift */,
+				315140DE25420E0E000A43C7 /* GetPhotosResponse.swift */,
+			);
+			path = "API client";
+			sourceTree = "<group>";
+		};
 		317CBCD12540965F00280C5B = {
 			isa = PBXGroup;
 			children = (
 				317CBCDC2540965F00280C5B /* Virtual Tourist */,
+				315140C92541DAA3000A43C7 /* Storyboards */,
 				317CBCF32540966000280C5B /* Virtual TouristTests */,
 				317CBCFE2540966000280C5B /* Virtual TouristUITests */,
 				317CBCDB2540965F00280C5B /* Products */,
@@ -107,13 +148,10 @@
 			children = (
 				317CBCDD2540965F00280C5B /* AppDelegate.swift */,
 				31F7D5832541131700B10018 /* SceneDelegate.swift */,
-				317CBCE32540965F00280C5B /* Main.storyboard */,
-				317CBD162540BD4800280C5B /* MapViewController.swift */,
-				317CBD232540D40500280C5B /* Pins&Photos.xcdatamodeld */,
-				317CBD292540F03300280C5B /* DataController.swift */,
-				317CBD1B2540BD5900280C5B /* LocationImagesController.swift */,
+				315140DA2541FA0E000A43C7 /* API client */,
+				315140CB2541DAD2000A43C7 /* View Controllers */,
+				315140CA2541DAC8000A43C7 /* Data Model */,
 				317CBCE62540966000280C5B /* Assets.xcassets */,
-				317CBCE82540966000280C5B /* LaunchScreen.storyboard */,
 				317CBCEB2540966000280C5B /* Info.plist */,
 			);
 			path = "Virtual Tourist";
@@ -268,10 +306,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				317CBD252540D40500280C5B /* Pins&Photos.xcdatamodeld in Sources */,
+				315140D32541F9FE000A43C7 /* Client.swift in Sources */,
 				317CBD2A2540F03300280C5B /* DataController.swift in Sources */,
 				317CBD1C2540BD5900280C5B /* LocationImagesController.swift in Sources */,
 				317CBCDE2540965F00280C5B /* AppDelegate.swift in Sources */,
 				317CBD172540BD4800280C5B /* MapViewController.swift in Sources */,
+				315140DF25420E0E000A43C7 /* GetPhotosResponse.swift in Sources */,
 				31F7D5842541131700B10018 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
