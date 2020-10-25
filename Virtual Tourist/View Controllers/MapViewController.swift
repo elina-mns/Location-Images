@@ -9,11 +9,10 @@ import UIKit
 import MapKit
 import CoreData
 
-class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
-    var locationManager: CLLocationManager!
-
+    
     var dataController: DataController!
     
     var fetchResultsController: NSFetchedResultsController<Pin>!
@@ -34,8 +33,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
    
     override func viewDidLoad() {
-        mapView.delegate = self
         super.viewDidLoad()
+        mapView.delegate = self
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleTap))
         mapView.addGestureRecognizer(gestureRecognizer)
         
@@ -130,5 +129,14 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
             return
         }
         mapView.removeAnnotation(annotation)
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let vc = storyboard?.instantiateViewController(identifier: "LocationImagesController") as? LocationImagesController else {
+            return
+        }
+        vc.coordinates = view.annotation?.coordinate
+        
+        self.present(vc, animated: true, completion: nil)
     }
 }
