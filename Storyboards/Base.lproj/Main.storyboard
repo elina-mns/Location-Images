@@ -53,12 +53,6 @@
                                     <constraint firstAttribute="height" constant="333" id="2hB-si-TQF"/>
                                 </constraints>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGt-Ae-52b">
-                                <rect key="frame" x="150" y="838" width="114" height="32"/>
-                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
-                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="New Collection"/>
-                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="odl-5W-GWg">
                                 <rect key="frame" x="0.0" y="330" width="414" height="492"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -93,18 +87,45 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGt-Ae-52b">
+                                <rect key="frame" x="150" y="838" width="114" height="32"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="New Collection"/>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kbZ-zI-nJY">
+                                <rect key="frame" x="0.0" y="512" width="414" height="128"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No images found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Po-dn-oyc">
+                                        <rect key="frame" x="142.5" y="53.5" width="129.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="QUq-va-wau"/>
+                                    <constraint firstItem="0Po-dn-oyc" firstAttribute="centerY" secondItem="kbZ-zI-nJY" secondAttribute="centerY" id="T69-QJ-xDD"/>
+                                    <constraint firstItem="0Po-dn-oyc" firstAttribute="centerX" secondItem="kbZ-zI-nJY" secondAttribute="centerX" id="gsE-1S-GYw"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ssm-lZ-dkk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="odl-5W-GWg" firstAttribute="trailing" secondItem="Ssm-lZ-dkk" secondAttribute="trailing" id="5fa-yK-nhO"/>
+                            <constraint firstItem="kbZ-zI-nJY" firstAttribute="centerY" secondItem="odl-5W-GWg" secondAttribute="centerY" id="KOV-OQ-Eax"/>
                             <constraint firstItem="odl-5W-GWg" firstAttribute="top" secondItem="Ssm-lZ-dkk" secondAttribute="top" constant="286" id="Nz2-Qh-IFG"/>
+                            <constraint firstItem="kbZ-zI-nJY" firstAttribute="centerX" secondItem="odl-5W-GWg" secondAttribute="centerX" id="Opw-kN-NLO"/>
                             <constraint firstItem="AGt-Ae-52b" firstAttribute="top" secondItem="odl-5W-GWg" secondAttribute="bottom" constant="16" id="PfV-q5-3jI"/>
                             <constraint firstItem="AGt-Ae-52b" firstAttribute="centerX" secondItem="Ssm-lZ-dkk" secondAttribute="centerX" id="VKR-g1-RSy"/>
+                            <constraint firstItem="kbZ-zI-nJY" firstAttribute="trailing" secondItem="odl-5W-GWg" secondAttribute="trailing" id="Zoc-Oc-eyT"/>
                             <constraint firstItem="WQE-OT-abC" firstAttribute="trailing" secondItem="Ssm-lZ-dkk" secondAttribute="trailing" id="eWP-yr-mpK"/>
                             <constraint firstItem="WQE-OT-abC" firstAttribute="leading" secondItem="Ssm-lZ-dkk" secondAttribute="leading" id="i4F-P6-s4X"/>
                             <constraint firstItem="WQE-OT-abC" firstAttribute="top" secondItem="BjB-qF-WrT" secondAttribute="top" id="oqL-lz-ZDk"/>
                             <constraint firstItem="odl-5W-GWg" firstAttribute="leading" secondItem="Ssm-lZ-dkk" secondAttribute="leading" id="otz-8q-Edc"/>
+                            <constraint firstItem="kbZ-zI-nJY" firstAttribute="leading" secondItem="odl-5W-GWg" secondAttribute="leading" id="sTv-3f-Mdd"/>
                             <constraint firstAttribute="bottom" secondItem="AGt-Ae-52b" secondAttribute="bottom" constant="26" id="uxF-Oj-Cqn"/>
                         </constraints>
                     </view>
@@ -113,6 +134,7 @@
                         <outlet property="addCollection" destination="AGt-Ae-52b" id="oZu-Vp-11j"/>
                         <outlet property="collectionView" destination="odl-5W-GWg" id="htZ-zG-X1t"/>
                         <outlet property="mapView" destination="WQE-OT-abC" id="OpP-P0-MZm"/>
+                        <outlet property="noImagesFound" destination="0Po-dn-oyc" id="Hwz-kl-LVD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="58o-MG-oIm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

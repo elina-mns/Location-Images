@@ -137,6 +137,6 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
         }
         vc.coordinates = view.annotation?.coordinate
         
-        self.present(vc, animated: true, completion: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

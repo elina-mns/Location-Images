@@ -14,6 +14,7 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addCollection: UIButton!
+    @IBOutlet weak var noImagesFound: UILabel!
     
     var photos: [Photo] = []
     private let reuseIdentifier = "ImageCell"
@@ -26,6 +27,7 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         collectionView.dataSource = self
         focusOnMap()
         downloadImages()
+        noImagesFound.isHidden = true
     }
     
     func focusOnMap() {
@@ -81,9 +83,12 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
                 self.photos = response.photos.photo
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
+                    if self.photos.isEmpty {
+                        self.noImagesFound.isHidden = false
+                    }
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                self.noImagesFound.isHidden = false
             }
         }
     }
