@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 class Client {
     
@@ -26,8 +27,8 @@ class Client {
         }
     }
         
-    func getCollection(pin: Pin, completion: @escaping (Result<GetPhotosResponse, Error>) -> Void) {
-        let url = Endpoints.getCollection(lat: pin.latitude, lon: pin.longitude).url
+    static func getCollection(coordinate: CLLocationCoordinate2D, completion: @escaping (Result<GetPhotosResponse, Error>) -> Void) {
+        let url = Endpoints.getCollection(lat: coordinate.latitude, lon: coordinate.longitude).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
                 completion(.failure(error!))

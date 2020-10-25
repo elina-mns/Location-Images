@@ -24,7 +24,11 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         mapView.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        
+        focusOnMap()
+        downloadImages()
+    }
+    
+    func focusOnMap() {
         guard let coordinates = coordinates else {
             return
         }
@@ -67,4 +71,45 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         return pinView
     }
     
+    func downloadImages() {
+        guard let coordinates = coordinates else {
+            return
+        }
+        Client.getCollection(coordinate: coordinates) { (result) in
+            switch result {
+            case .success(let response):
+                self.photos = response.photos.photo
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
+
+extension LocationImagesController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let space: CGFloat = 3.0
+        let dimension = (view.frame.size.width - (2 * space)) / 3.0
+        let size = CGSize(width:dimension, height: dimension)
+        return size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 3.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout
+                            collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 3.0
+    }
+}
+
