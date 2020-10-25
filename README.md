@@ -1,4 +1,6 @@
 # Virtual Tourist
+<img src="https://github.com/elina-mns/Virtual-Tourist/blob/main/map.png"
+align="right" width=200/>
 Virtual map with location images associated with the pin placed by user.
 
 ## _Description_
