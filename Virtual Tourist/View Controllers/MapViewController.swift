@@ -47,13 +47,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     @objc func handleTap(gestureRecognizer: UILongPressGestureRecognizer) {
-        let location = gestureRecognizer.location(in: mapView)
-        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-        // save to database
-        savePin(coordinate: coordinate)
-        
-        let regionFocus = MKCoordinateRegion(center: coordinate, latitudinalMeters: 50000, longitudinalMeters: 50000)
-        mapView.setRegion(regionFocus, animated: true)
+        if gestureRecognizer.state == .ended {
+            let location = gestureRecognizer.location(in: mapView)
+            let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+            // save to database
+            savePin(coordinate: coordinate)
+            
+            let regionFocus = MKCoordinateRegion(center: coordinate, latitudinalMeters: 50000, longitudinalMeters: 50000)
+            mapView.setRegion(regionFocus, animated: true)
+        }
     }
     
     func savePin(coordinate: CLLocationCoordinate2D) {
@@ -67,22 +69,53 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    func deletePin(coordinate: CLLocationCoordinate2D) {
+        print("deleting")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+        request.predicate = NSPredicate(format: "latitude == %lf && longitude == %lf", coordinate.latitude, coordinate.longitude)
+        if let pinToDelete = try? dataController.viewContext.fetch(request).first as? Pin {
+            dataController.viewContext.delete(pinToDelete)
+            try? dataController.viewContext.save()
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is MKPointAnnotation else { print("no mkpointannotaions"); return nil }
         
         let reuseId = "pin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
-            pinView!.rightCalloutAccessoryView = UIButton(type: .infoDark)
-            pinView!.pinTintColor = UIColor.black
-        }
-        else {
-            pinView!.annotation = annotation
-        }
+        let pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView ?? MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        pinView.canShowCallout = true
+        let infoButton = UIButton(type: .infoDark)
+        infoButton.tag = 1
+        pinView.rightCalloutAccessoryView = infoButton
+        let closeButton = UIButton(type: .close)
+        closeButton.tag = 2
+        pinView.leftCalloutAccessoryView = closeButton
+        pinView.pinTintColor = .black
+        pinView.annotation = annotation
         return pinView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if control.tag == 1 {
+            guard let vc = storyboard?.instantiateViewController(identifier: "LocationImagesController") as? LocationImagesController else {
+                return
+            }
+            vc.coordinates = view.annotation?.coordinate
+            
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else if control.tag == 2, let coordinate = view.annotation?.coordinate {
+            let alert = UIAlertController(title: "Delete Selected Location", message: "Are you sure you want to delete the current pin?", preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                guard let strongSelf = self else { return }
+                strongSelf.deletePin(coordinate: coordinate)
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(deleteAction)
+            present(alert, animated: true, completion: nil)
+        }
     }
 }
 
@@ -108,9 +141,11 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
     }
     
     func insertInMapView(pin: Pin?) {
-        guard let annotation = annotationFromPin(pin: pin) else {
+        guard let pin = pin,
+              let annotation = annotationFromPin(pin: pin) else {
             return
         }
+        annotation.title = "\(pin.latitude), \(pin.longitude)"
         mapView.addAnnotation(annotation)
     }
     
@@ -125,18 +160,10 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
     }
     
     func deleteInMapView(pin: Pin?) {
-        guard let annotation = annotationFromPin(pin: pin) else {
+        guard let pin = pin,
+              let annotationToRemove = mapView.annotations.first(where: { $0.coordinate.latitude == pin.latitude && $0.coordinate.longitude == pin.longitude }) else {
             return
         }
-        mapView.removeAnnotation(annotation)
-    }
-    
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let vc = storyboard?.instantiateViewController(identifier: "LocationImagesController") as? LocationImagesController else {
-            return
-        }
-        vc.coordinates = view.annotation?.coordinate
-        
-        self.navigationController?.pushViewController(vc, animated: true)
+        mapView.removeAnnotation(annotationToRemove)
     }
 }

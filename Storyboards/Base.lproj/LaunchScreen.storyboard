@@ -17,24 +17,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Virtual Tourist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="73S-6i-jOP">
-                                <rect key="frame" x="53" y="254" width="194" height="32.5"/>
+                                <rect key="frame" x="53" y="254" width="169" height="32.5"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="map" translatesAutoresizingMaskIntoConstraints="NO" id="1Hj-ip-0KP">
-                                <rect key="frame" x="93" y="294" width="229" height="307"/>
+                                <rect key="frame" x="93" y="294" width="229" height="512"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="73S-6i-jOP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="210" id="4dT-xd-yS4"/>
-                            <constraint firstItem="1Hj-ip-0KP" firstAttribute="top" secondItem="73S-6i-jOP" secondAttribute="bottom" constant="7.5" id="KDb-3B-jcA"/>
+                            <constraint firstItem="73S-6i-jOP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="210" id="FZi-JN-aCM"/>
+                            <constraint firstItem="73S-6i-jOP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="53" id="UzQ-qq-4FP"/>
                             <constraint firstItem="1Hj-ip-0KP" firstAttribute="top" secondItem="73S-6i-jOP" secondAttribute="bottom" constant="7.5" id="VNx-s7-2mV"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="73S-6i-jOP" secondAttribute="trailing" constant="167" id="aAZ-rm-b1R"/>
-                            <constraint firstItem="73S-6i-jOP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="53" id="baX-jK-T00"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1Hj-ip-0KP" secondAttribute="bottom" constant="261" id="f4o-4y-Np0"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1Hj-ip-0KP" secondAttribute="trailing" constant="92" id="pIz-Ev-W9F"/>
                             <constraint firstItem="1Hj-ip-0KP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="93" id="vbR-vu-q1P"/>
                         </constraints>
