@@ -1,6 +1,6 @@
 //
-//  Virtual_TouristTests.swift
-//  Virtual TouristTests
+//  Location_imagesTests.swift
+//  Location images
 //
 //  Created by Elina Mansurova on 2020-10-21.
 //

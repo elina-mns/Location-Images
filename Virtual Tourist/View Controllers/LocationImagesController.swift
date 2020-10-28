@@ -1,6 +1,6 @@
 //
 //  LocationImagesController.swift
-//  Virtual Tourist
+//  Location Images
 //
 //  Created by Elina Mansurova on 2020-10-21.
 //
@@ -63,6 +63,8 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         }
         return false
     }
+    
+    
     
     func pinFromLocation() -> Pin? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")

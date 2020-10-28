@@ -1,6 +1,6 @@
 //
 //  DataController.swift
-//  Virtual Tourist
+//  Location Images
 //
 //  Created by Elina Mansurova on 2020-10-21.
 //

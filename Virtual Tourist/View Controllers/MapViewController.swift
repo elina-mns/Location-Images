@@ -1,6 +1,6 @@
 //
 //  MapViewController.swift
-//  Virtual Tourist
+//  Location Images
 //
 //  Created by Elina Mansurova on 2020-10-21.
 //
@@ -43,6 +43,14 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let pins: [Pin] = fetchResultsController.fetchedObjects ?? []
         for pin in pins {
             insertInMapView(pin: pin)
+        }
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SavedLocation")
+        if let savedLocation = try? dataController.viewContext.fetch(request).first as? SavedLocation {
+            let coordinate = CLLocationCoordinate2D(latitude: savedLocation.latitude, longitude: savedLocation.longitude)
+            let span = MKCoordinateSpan(latitudeDelta: savedLocation.spanLatitude, longitudeDelta: savedLocation.spanLongitude)
+            let regionFocus = MKCoordinateRegion(center: coordinate, span: span)
+            mapView.setRegion(regionFocus, animated: false)
         }
     }
     
@@ -116,6 +124,29 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             alert.addAction(cancelAction)
             alert.addAction(deleteAction)
             present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        let centerLatitude = mapView.region.center.latitude
+        let centerLongitude = mapView.region.center.longitude
+        let spanLatitude = mapView.region.span.latitudeDelta
+        let spanLongitude = mapView.region.span.longitudeDelta
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "SavedLocation")
+        if let savedLocation = try? dataController.viewContext.fetch(request).first as? SavedLocation {
+            savedLocation.latitude = centerLatitude
+            savedLocation.longitude = centerLongitude
+            savedLocation.spanLatitude = spanLatitude
+            savedLocation.spanLongitude = spanLongitude
+            try? dataController.viewContext.save()
+        } else {
+            let savedLocation = SavedLocation(context: dataController.viewContext)
+            savedLocation.latitude = centerLatitude
+            savedLocation.longitude = centerLongitude
+            savedLocation.spanLatitude = spanLatitude
+            savedLocation.spanLongitude = spanLongitude
+            try? dataController.viewContext.save()
         }
     }
 }
