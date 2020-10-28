@@ -102,6 +102,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 return
             }
             vc.coordinates = view.annotation?.coordinate
+            vc.dataController = dataController
             
             self.navigationController?.pushViewController(vc, animated: true)
         } else if control.tag == 2, let coordinate = view.annotation?.coordinate {

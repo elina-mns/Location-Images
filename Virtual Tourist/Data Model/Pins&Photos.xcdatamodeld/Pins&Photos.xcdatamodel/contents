@@ -3,8 +3,14 @@
     <entity name="Pin" representedClassName="Pin" syncable="YES" codeGenerationType="class">
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SavedPhoto" inverseName="pin" inverseEntity="SavedPhoto"/>
+    </entity>
+    <entity name="SavedPhoto" representedClassName="SavedPhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="photos" inverseEntity="Pin"/>
     </entity>
     <elements>
-        <element name="Pin" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Pin" positionX="-63" positionY="-18" width="128" height="28"/>
+        <element name="SavedPhoto" positionX="-63" positionY="0" width="128" height="73"/>
     </elements>
 </model>

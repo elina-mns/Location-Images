@@ -92,6 +92,9 @@
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                 <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="setNewCollection:" destination="SJc-9Q-wmp" eventType="touchUpInside" id="g7a-hK-rjt"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kbZ-zI-nJY">
                                 <rect key="frame" x="0.0" y="512" width="414" height="128"/>
@@ -134,6 +137,7 @@
                         <outlet property="addCollection" destination="AGt-Ae-52b" id="oZu-Vp-11j"/>
                         <outlet property="collectionView" destination="odl-5W-GWg" id="htZ-zG-X1t"/>
                         <outlet property="mapView" destination="WQE-OT-abC" id="OpP-P0-MZm"/>
+                        <outlet property="newCollection" destination="AGt-Ae-52b" id="Cn9-7P-Xke"/>
                         <outlet property="noImagesFound" destination="0Po-dn-oyc" id="Hwz-kl-LVD"/>
                     </connections>
                 </viewController>

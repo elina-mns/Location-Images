@@ -15,19 +15,34 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addCollection: UIButton!
     @IBOutlet weak var noImagesFound: UILabel!
+    @IBOutlet weak var newCollection: UIButton!
     
     var photos: [Photo] = []
     private let reuseIdentifier = "ImageCell"
     var coordinates: CLLocationCoordinate2D?
+    
+    var dataController: DataController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
+        newCollection.isEnabled = false
         focusOnMap()
-        downloadImages()
+        if checkIfThereAreSavedImages() {
+            loadPhotoFromDataBase()
+            newCollection.isEnabled = true
+        } else {
+            downloadImages()
+        }
         noImagesFound.isHidden = true
+    }
+    
+    @IBAction func didTapNewCollection(_ sender: Any) {
+        photos = []
+        collectionView.reloadData()
+        downloadImages()
     }
     
     func focusOnMap() {
@@ -42,16 +57,63 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         mapView.setRegion(regionFocus, animated: true)
     }
     
+    fileprivate func checkIfThereAreSavedImages() -> Bool {
+        if let pin = pinFromLocation() {
+            return pin.photos?.count != 0
+        }
+        return false
+    }
+    
+    func pinFromLocation() -> Pin? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+        guard let coordinates = coordinates else {
+            return nil
+        }
+        request.predicate = NSPredicate(format: "latitude == %lf && longitude == %lf", coordinates.latitude, coordinates.longitude)
+        return try? dataController.viewContext.fetch(request).first as? Pin
+    }
+    
+    func loadPhotoFromDataBase() {
+        guard let pin = pinFromLocation(), let photos = pin.photos else {
+            return
+        }
+        for photo in photos {
+            if let savedPhoto = photo as? SavedPhoto,
+               let imageData = savedPhoto.imageData {
+                var photo = Photo()
+                photo.image = UIImage(data: imageData)
+                self.photos.append(photo)
+            }
+        }
+        collectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
+    }
+    
+    fileprivate func savePhotoToCoreData(_ image: UIImage?) {
+        let savedPhoto = SavedPhoto(context: self.dataController.viewContext)
+        savedPhoto.imageData = image?.jpegData(compressionQuality: 1.0)
+        self.pinFromLocation()?.addToPhotos(savedPhoto)
+        do {
+            try self.dataController.viewContext.save()
+        } catch {
+            print(error)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ImageCell
         let photo = self.photos[indexPath.row]
-
-        cell.imageView.loadFromURL(photoUrl: photo.urlToDownload)
-
+        if let image = photo.image {
+            cell.imageView.image = image
+        } else {
+            cell.imageView.loadFromURL(photoUrl: photo.urlToDownload) { [weak self] image in
+                guard let self = self else { return }
+                self.savePhotoToCoreData(image)
+            }
+        }
         return cell
     }
     
@@ -87,11 +149,14 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
                         self.noImagesFound.isHidden = false
                     }
                 }
-            case .failure(let error):
+            case .failure:
                 self.noImagesFound.isHidden = false
             }
+            self.newCollection.isEnabled = true
         }
     }
+    
+    
 }
 
 extension LocationImagesController: UICollectionViewDelegateFlowLayout {
