@@ -23,16 +23,27 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
     
     var dataController: DataController!
     
+    var selectedToDelete: [Int] = [] {
+        didSet {
+            if selectedToDelete.isEmpty {
+                newCollection.setTitle("New Collection", for: .normal)
+            } else {
+                newCollection.setTitle("Delete selected pictures", for: .normal)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        newCollection.isEnabled = false
+        collectionView.allowsMultipleSelection = true
+        newCollection?.isEnabled = false
         focusOnMap()
         if checkIfThereAreSavedImages() {
             loadPhotoFromDataBase()
-            newCollection.isEnabled = true
+            newCollection?.isEnabled = true
         } else {
             downloadImages()
         }
@@ -40,9 +51,43 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
     }
     
     @IBAction func didTapNewCollection(_ sender: Any) {
-        photos = []
+        if selectedToDelete.isEmpty {
+            photos = []
+            pinFromLocation()?.removeFromPhotos(pinFromLocation()!.photos!)
+            collectionView.reloadData()
+            downloadImages()
+        } else {
+            guard let pin = pinFromLocation(), let coreDataPhotos = pin.photos?.array as? [SavedPhoto] else {
+                return
+            }
+            for index in selectedToDelete {
+                photos.remove(at: index)
+                let savedPhotoToRemove = coreDataPhotos[index]
+                pin.removeFromPhotos(savedPhotoToRemove)
+            }
+            try? dataController.viewContext.save()
+            collectionView.deleteItems(at: selectedToDelete.map { IndexPath(item: $0, section: 0) })
+            selectedToDelete = []
+        }
+    }
+    
+    func deleteItem(at indexPath: IndexPath) {
+        photos.remove(at: indexPath.row)
         collectionView.reloadData()
-        downloadImages()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.isSelected = true
+        selectedToDelete.append(indexPath.row)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.isSelected = false
+        if let indexToRemove = selectedToDelete.firstIndex(where: { $0 == indexPath.row }) {
+            selectedToDelete.remove(at: indexToRemove)
+        }
     }
     
     func focusOnMap() {
@@ -64,8 +109,6 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         return false
     }
     
-    
-    
     func pinFromLocation() -> Pin? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
         guard let coordinates = coordinates else {
@@ -76,17 +119,17 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
     }
     
     func loadPhotoFromDataBase() {
-        guard let pin = pinFromLocation(), let photos = pin.photos else {
+        guard let pin = pinFromLocation(), let photos = pin.photos?.array as? [SavedPhoto] else {
             return
         }
         for photo in photos {
-            if let savedPhoto = photo as? SavedPhoto,
-               let imageData = savedPhoto.imageData {
+            if let imageData = photo.imageData {
                 var photo = Photo()
                 photo.image = UIImage(data: imageData)
                 self.photos.append(photo)
             }
         }
+        noImagesFound.superview?.removeFromSuperview()
         collectionView.reloadData()
     }
     
@@ -148,17 +191,19 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     if self.photos.isEmpty {
-                        self.noImagesFound.isHidden = false
+                        self.noImagesFound?.isHidden = false
+                    } else {
+                        self.noImagesFound?.superview?.removeFromSuperview()
                     }
                 }
             case .failure:
-                self.noImagesFound.isHidden = false
+                self.noImagesFound?.isHidden = false
             }
-            self.newCollection.isEnabled = true
+            DispatchQueue.main.async {
+                self.newCollection?.isEnabled = true
+            }
         }
     }
-    
-    
 }
 
 extension LocationImagesController: UICollectionViewDelegateFlowLayout {
