@@ -114,16 +114,10 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             
             self.navigationController?.pushViewController(vc, animated: true)
         } else if control.tag == 2, let coordinate = view.annotation?.coordinate {
-            let alert = UIAlertController(title: "Delete Selected Location", message: "Are you sure you want to delete the current pin?", preferredStyle: .alert)
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-                guard let strongSelf = self else { return }
-                strongSelf.deletePin(coordinate: coordinate)
+            showConfirmationForDelete(title: "Delete Selected Location",
+                                      message: "Are you sure you want to delete the current pin?") {
+                self.deletePin(coordinate: coordinate)
             }
-            alert.addAction(cancelAction)
-            alert.addAction(deleteAction)
-            present(alert, animated: true, completion: nil)
         }
     }
     

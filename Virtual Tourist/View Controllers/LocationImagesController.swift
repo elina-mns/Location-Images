@@ -57,18 +57,25 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
             collectionView.reloadData()
             downloadImages()
         } else {
-            guard let pin = pinFromLocation(), let coreDataPhotos = pin.photos?.array as? [SavedPhoto] else {
-                return
+            showConfirmationForDelete(title: "Delete selected photos",
+                                      message: "Are you sure you want to delete selected photos?") {
+                self.deletePhotosFromData()
             }
-            for index in selectedToDelete {
-                photos.remove(at: index)
-                let savedPhotoToRemove = coreDataPhotos[index]
-                pin.removeFromPhotos(savedPhotoToRemove)
-            }
-            try? dataController.viewContext.save()
-            collectionView.deleteItems(at: selectedToDelete.map { IndexPath(item: $0, section: 0) })
-            selectedToDelete = []
         }
+    }
+    
+    func deletePhotosFromData() {
+        guard let pin = pinFromLocation(), let coreDataPhotos = pin.photos?.array as? [SavedPhoto] else {
+            return
+        }
+        for index in selectedToDelete {
+            photos.remove(at: index)
+            let savedPhotoToRemove = coreDataPhotos[index]
+            pin.removeFromPhotos(savedPhotoToRemove)
+        }
+        try? dataController.viewContext.save()
+        collectionView.deleteItems(at: selectedToDelete.map { IndexPath(item: $0, section: 0) })
+        selectedToDelete = []
     }
     
     func deleteItem(at indexPath: IndexPath) {
@@ -229,4 +236,5 @@ extension LocationImagesController: UICollectionViewDelegateFlowLayout {
         return 3.0
     }
 }
+
 

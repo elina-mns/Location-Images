@@ -21,6 +21,7 @@
 		317CBD1C2540BD5900280C5B /* LocationImagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317CBD1B2540BD5900280C5B /* LocationImagesController.swift */; };
 		317CBD252540D40500280C5B /* Pins&Photos.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 317CBD232540D40500280C5B /* Pins&Photos.xcdatamodeld */; };
 		317CBD2A2540F03300280C5B /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317CBD292540F03300280C5B /* DataController.swift */; };
+		318F15B3254BBA41003AB276 /* AlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318F15B2254BBA41003AB276 /* AlertExtension.swift */; };
 		31F7D5842541131700B10018 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F7D5832541131700B10018 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		317CBD1B2540BD5900280C5B /* LocationImagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationImagesController.swift; sourceTree = "<group>"; };
 		317CBD242540D40500280C5B /* Pins&Photos.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Pins&Photos.xcdatamodel"; sourceTree = "<group>"; };
 		317CBD292540F03300280C5B /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		318F15B2254BBA41003AB276 /* AlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertExtension.swift; sourceTree = SOURCE_ROOT; };
 		31F7D5832541131700B10018 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,6 +114,7 @@
 			children = (
 				317CBD162540BD4800280C5B /* MapViewController.swift */,
 				317CBD1B2540BD5900280C5B /* LocationImagesController.swift */,
+				318F15B2254BBA41003AB276 /* AlertExtension.swift */,
 				3118A2ED2543412100532301 /* ImageCell.swift */,
 				317CBD292540F03300280C5B /* DataController.swift */,
 			);
@@ -316,6 +319,7 @@
 				316D97CA25435BE3001DCDA3 /* UIimageView+load.swift in Sources */,
 				3118A2EE2543412100532301 /* ImageCell.swift in Sources */,
 				317CBD2A2540F03300280C5B /* DataController.swift in Sources */,
+				318F15B3254BBA41003AB276 /* AlertExtension.swift in Sources */,
 				317CBD1C2540BD5900280C5B /* LocationImagesController.swift in Sources */,
 				317CBCDE2540965F00280C5B /* AppDelegate.swift in Sources */,
 				317CBD172540BD4800280C5B /* MapViewController.swift in Sources */,
