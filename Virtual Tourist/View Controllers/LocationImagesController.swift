@@ -161,9 +161,13 @@ class LocationImagesController: UIViewController, MKMapViewDelegate, UICollectio
         if let image = photo.image {
             cell.imageView.image = image
         } else {
+            cell.imageView.isHidden = true
+            cell.activityIndicator.startAnimating()
             cell.imageView.loadFromURL(photoUrl: photo.urlToDownload) { [weak self] image in
                 guard let self = self else { return }
                 self.savePhotoToCoreData(image)
+                cell.imageView.isHidden = false
+                cell.activityIndicator.stopAnimating()
             }
         }
         return cell
