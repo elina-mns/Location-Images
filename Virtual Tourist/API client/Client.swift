@@ -12,14 +12,13 @@ class Client {
     
     static let apiKey = "e6a4f20b60ddf3398bfe3d3d97ac922a"
     
-    
     enum Endpoints {
         static let baseUrl = "https://www.flickr.com/services/rest/"
         case getCollection(lat: Double, lon: Double)
         var stringValue: String {
             switch self {
             case let .getCollection(lat, lon):
-                return Client.Endpoints.baseUrl + "?method=flickr.photos.search&api_key=\(Client.apiKey)&lat=\(lat)&lon=\(lon)&rad=5&format=json&nojsoncallback=1"
+                return Client.Endpoints.baseUrl + "?method=flickr.photos.search&api_key=\(Client.apiKey)&lat=\(lat)&lon=\(lon)&rad=5&format=json&per_page=20&page=\((1...3).randomElement() ?? 1)&nojsoncallback=1"
             }
         }
         var url: URL {
